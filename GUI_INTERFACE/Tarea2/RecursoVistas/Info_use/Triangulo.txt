@@ -1,0 +1,4 @@
+Nombre: Triangulo
+Lados: 3
+Formula Area: BxH / 2
+Tipo: Geometrico

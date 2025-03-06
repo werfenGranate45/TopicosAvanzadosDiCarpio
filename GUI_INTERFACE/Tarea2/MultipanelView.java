@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 
 public class MultipanelView {
     protected JFrame window;
-    protected JPanel container, menu;
+    protected JPanel container, menu, userUpload;
     protected JLabel imageOfContainer,imageToButtonRigth, imageToButtonLeft, imageToButtonShut;
     protected JButton buttonToRight, buttonToLeft, buttonShutdown;
     protected MultiPanelModel theModelObject;
@@ -43,6 +43,17 @@ public class MultipanelView {
         ImageIcon image = new ImageIcon(path);
         return new ImageIcon(image.getImage().getScaledInstance(width, height, 0));
     }
+
+    /*
+     * Concentar la modelo con una vista para que el usuario inserte una dirreccion al modelo que se va mostrar
+     * En este caso solo es un panel que contiene un text Field y 2 botones uno de subir y otro de cancelar
+     */
+
+     private void connectModeltoView(){
+        //Dentro de este metodo se creara la vista completa como ya se habia mostrado anteriormente
+        userUpload.setSize(800,500);
+        userUpload.setBounds(0, 0, 0, 0);
+     }
 
     //Hacer rehuso con parametros para que la vista solo cambie
     //Configuraremos el panel principal del menu
@@ -79,6 +90,7 @@ public class MultipanelView {
         imageToButtonRigth.setText("-->");
 
     }
+
 
     private void assamble(){
         container.add(imageOfContainer);

@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Un programa multipanel que va cambiar de imagen cada que aprieta una tecla 
@@ -68,11 +69,27 @@ public class MultiPanelModel {
         return pathToModels;
     }
 
+    private ArrayList<String[]> splitLines(String[] readPaths){
+        int i = 0;
+        ArrayList<String[]> dataSplit = new ArrayList<String[]>();
+        
+        do
+            dataSplit.add(readPaths[i++].split(","));
+        while(readPaths[i] != null);
+
+        return dataSplit;
+    }
+
     private void closeFile(BufferedReader dummyFile) throws IOException{ dummyFile.close(); }
 
-    /*Falta mejor implementacion para que te divida el arregleo con uso de split*/
-    public String[] getAllModels(){
+    /**
+     * El split esta hecho y se almacena dentro de una lista de tipo String[]
+     * Donde cada String[] tiene una longitud de 3 y contiene las rutas de dirreccion 
+     * para las imagenes
+     * @return Un ArrayList de tipo String[]
+     */
+    public ArrayList<String[]> getAllModels(){
         this.openFile(pathToModels);
-        return this.readFile(pathToModels);
+        return this.splitLines(this.readFile(pathToModels));
     }
 }
