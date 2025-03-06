@@ -8,3 +8,8 @@ Tenemso metdos como setLineWrap()
 setWrapedStyleWord()
 setBounds()
 serLineWrap()
+
+Si queremos hacer el multipanel debes de hacer un panel generico
+para que cada que se le cambie los datos se le asigne un nuevo personaje
+este debe de tener cierta estructura y se deben de generar tanto objetos se pueda
+dependiendo del csv
