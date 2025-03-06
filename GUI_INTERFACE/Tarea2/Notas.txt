@@ -1,0 +1,10 @@
+Notas de controlador: 
+Usar Flecha izquierda y derecha para mover e indicaciones de usar el programa la Flecha de arriba asi bien perron 
+
+Notas del Modelo:
+
+Notas de la vista:
+Tenemso metdos como setLineWrap()
+setWrapedStyleWord()
+setBounds()
+serLineWrap()
