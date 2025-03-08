@@ -4,25 +4,35 @@ import java.awt.event.MouseListener;
 import javax.swing.JOptionPane;
 
 public class MultiPanelController {
-
     private MultipanelView mpv;
+    private UserPanelView upv;
 
     public MultiPanelController(){
         mpv = new MultipanelView();
+        upv	= new UserPanelView();
     }
+
+    public void setMultipanelView(MultipanelView mpv){ this.mpv = mpv; }
+    public MultipanelView getMultipanelView(){ return this.mpv; } 
 
     public void start(){
         MouseController mc = new MouseController();
-        mc.run();
     } 
 
-    //Controlador para apagar el programa
+    private void shutDown(){
+        JOptionPane.showMessageDialog(null, "Ha finalizado", "Se Acavoid", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
+    }
+
+    //Controlador para darle vida al programa
     private class MouseController implements MouseListener{
 
         @Override
         public void mouseClicked(MouseEvent e) {
-           if(e.getComponent() == mpv.buttonShutdown)
-                this.shutDown();
+            if( e.getComponent() == mpv.getButtonOff()){
+                shutDown();
+            }
+           
         }
 
         @Override
@@ -41,19 +51,7 @@ public class MultiPanelController {
         /**
          * Este es la accion para el boton de apagar
          */
-        private void shutDown(){
-            JOptionPane.showMessageDialog(null, "Ha finalizado", "Se Acavoid", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
-
-        private void addListener(){
-            mpv.buttonShutdown.addMouseListener(this);
-        }
-
-        public void run(){
-            this.addListener();
-            mpv.initView();
-        }
-        
-    }
+       
+    }     
 }
+

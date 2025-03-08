@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.awt.TextArea;
 
 //Para crear el paquete se debe tener el mismo nombre que la carpeta donde se aloja
 import javax.swing.ImageIcon;
@@ -7,7 +6,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  * Como va tener la ventana los componentes tendra
@@ -19,137 +17,179 @@ import javax.swing.JTextArea;
 
 
 public class MultipanelView {
-    protected JFrame window;
-    protected JPanel container, menu, userUpload;
-    protected JLabel imageOfContainer,imageToButtonRigth, imageToButtonLeft, imageToButtonShut;
-    protected JButton buttonToRight, buttonToLeft, buttonShutdown;
-    protected MultiPanelModel theModelObject;
+    private JFrame window;
+    private JPanel container, navbar;
+    private JLabel imageOfContainer,imageToButtonRight, imageToButtonLeft, imageToButtonShut;
+    private JButton buttonToRight, buttonToLeft, buttonShutdown;
+    private MultiPanelModel theModelObject;
+
+    public void setWindow(JFrame window){this.window = window;}
+    public void setContainer(JPanel pContainer){this.container = pContainer;}
+    public void setNavbar(JPanel navBar){this.navbar = navBar; }
+    public void setLabelContainer(JLabel labContainer){this.imageOfContainer = labContainer;}
+    public void setLabelButtonRight(JLabel imageButtonRight){this.imageToButtonRight = imageButtonRight; }
+    public void setLabelButtonLeft(JLabel imageButtonLeft){this.imageToButtonLeft = imageButtonLeft;}
+    public void setButtonRight(JButton buttonRight){ this.buttonToRight = buttonRight; }
+    public void setButtonLeft(JButton buttonLeft){ this.buttonToLeft = buttonLeft; }
+    public void setButtonShutdown(JButton buttonOff){ this.buttonShutdown = buttonOff; }
+    public void setMultiPanelModel(MultiPanelModel mpm){this.theModelObject = mpm;}
+
+    public JFrame get(){ return this.window;  }
+    public JPanel getContainer(){ return this.container; }
+    public JPanel getNavBar(){ return this.navbar; }
+    public JLabel getContainerLabel() { return this.imageOfContainer; }
+    public JLabel getLabelbuttonRight() {return this.imageToButtonRight; }
+    public JLabel getLabelbuttonLeft() { return this.imageToButtonLeft; }
+    public JButton getButtonRight() { return this.buttonToRight; }
+    public JButton getButtonLeft() { return this.buttonToLeft; }
+    public JButton getButtonOff() { return this.buttonShutdown; }
+    public MultiPanelModel getModel(){ return this.theModelObject; }
 
     public MultipanelView(){
         window             = new JFrame();
         container          = new JPanel();
-        menu               = new JPanel();
+        navbar             = new JPanel();
         imageOfContainer   = new JLabel();
         imageToButtonLeft  = new JLabel();
-        imageToButtonRigth = new JLabel();
+        imageToButtonRight = new JLabel();
         imageToButtonShut  = new JLabel();
         buttonToRight      = new JButton();
         buttonToLeft       = new JButton();
         buttonShutdown     = new JButton();
         theModelObject     = new MultiPanelModel();
     }
+      
 
+    /**
+     * Metodo que te regresa una imagen escalada
+     * @param path Direccion de la imagen de tipo String
+     * @param width Numero de ancho en int
+     * @param height Numero de alto en int
+     * @return Un objeto de tipo imageIcon
+     */
     public ImageIcon escaledImage(String path, int width, int height){
         ImageIcon image = new ImageIcon(path);
         return new ImageIcon(image.getImage().getScaledInstance(width, height, 0));
     }
 
-    /*
-     * Concentar la modelo con una vista para que el usuario inserte una dirreccion al modelo que se va mostrar
-     * En este caso solo es un panel que contiene un text Field y 2 botones uno de subir y otro de cancelar
+    /**
+     * Metodo que configura los atributos necesarios para mostrar la venta principal del programa
+     * Solo se configura lo basico para mostrar los componentes necesarios para el dominio de la
+     * aplicacion
+     * @param width Tamaño del ancho de la ventana [Int]
+     * @param height Tamaño de la altura de la ventana  [Int]
+     * @param titleWindow Titulo de la ventana [String]
+     * @return Objeto de tipo JFrame, que es la ventana que se utilizara
      */
+    public JFrame setUpWindow(int width, int height, String titleWindow){
 
-     private void connectModeltoView(){
-        //Dentro de este metodo se creara la vista completa como ya se habia mostrado anteriormente
-        userUpload.setSize(800,500);
-        userUpload.setBounds(0, 0, 0, 0);
-     }
-
-    //Hacer rehuso con parametros para que la vista solo cambie
-    //Configuraremos el panel principal del menu
-    private void setting(){
-        window.setSize(1000, 600);
-        window.setTitle("Ventana multipanel");
+        window.setSize(width, height);
+        window.setTitle(titleWindow);
         window.setIconImage(new ImageIcon("RecursoLeft4Dead\\Images_use\\IconProgram.jpeg").getImage());
-        window.setUndecorated(true);
-        window.setBackground(new Color(0,0,0,0));
-        window.setResizable(true);
+        //window.setUndecorated(true);
+        //window.setBackground(new Color(0,0,0,0));
+        window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.setLayout(null);
-        
-        //Configuracion de los containers
-        //X: 250 y Y:200
-        container.setBounds(250,200,500, 200);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        return this.window;
+    }
+
+    public void showWindow(boolean signal){
+        window.setVisible(signal);
+    }
+
+    /**
+     *  
+     * Ok en esta parte se configura el panel principal donde se mostra imagenes que se requiera
+     * _NOTA: EL Modelos se encargara de colocar la imagen de acuerdo a lo solicitado
+     * _NOTA: Por ejemplo en setIcon lo obtendremos desde el modelo asi que cambiar esa ruta 
+     * _NOTA: Usaremos el modelo adentro del contenedor
+     * 
+     * @param x Posicion en el eje x del Panel adentro de la ventana 
+     * @param y Posicion en el eje y del Panel adentro de la ventana
+     * @param width Tamaño del ancho del Panel
+     * @param height Tamaño del alto del Panel
+     * @return Un objeto de tipo JPanel que es el panel principal
+     * 
+     * @Nota Si quiere colocar al centro un componente(en caso de que no uses border layaout) 
+     * Usas la siguiente formula aca perron:  
+     * x = (W_Ventana - W_Panel) / 2  
+     * y = (H_Ventana - H_Panel) / 2  
+     */
+    public JPanel setUpCotainer(int x, int y, int width, int height){
+        imageOfContainer.setBounds(0, 0, width, height);
+        container.setBounds(x,y,width, height);
+        container.setBackground(new Color(0, 255, 0)); //Los BackGround es una prueba de ubicacion
         container.setLayout(null);
-        menu.setBounds(0, 460, 1000, 100);
-        menu.setBackground(new Color(255,0,0));
-        menu.setLayout(null);
-        
-        //Configuracion de todas las imagenes asi bien insanas, bueno son de las etiquetas del container pricipal
-        //Ojo para las etiquetas debes de poner un setBounds, que digamoslo levanta la imagen
-        imageOfContainer.setIcon(this.escaledImage("GUI_INTERFACE\\Tarea2\\RecursoLeft4Dead\\Images_use\\HomeroUchiha.jpeg", 500, 200));
-        imageOfContainer.setBounds(0, 0, 500, 200);
+
+        return this.container;
+    }
+
+    public void showContainer(boolean signal){
+        container.setVisible(signal);
+    }
+
+    /**
+     * Ok el NavBar es el componente que nos permitira navegar por las imagenes de las interfaces
+     * NOTA: No se si va tener una imagen fija o un color falta considerarlo Por ahora es Rojo
+     * _NOTA: A considerar los componentes los estoy configurando dentro del mismo metodo
+     * _NOTA: para hacerlo mas modular deberia configurarse por apartado cada componente y asi
+     * _NOTA: TENER UNA MEJOR PERSONALIZACION, Puede implementarce¿?
+     * @param x Posicion del NavBar del eje x
+     * @param y Posicion del NavBar del eje y
+     * @param width Es el ancho de la NavBar
+     * @param height Es el largo de la NavBar
+     * @return Un objeto de tipo JPanel que representa el metodo de navegacion del programa
+     */
+    public JPanel setUpNavBar(int x, int y, int width, int height){
         imageToButtonShut.setText("Boton Apagado.");
         imageToButtonShut.setBounds(0,0,50,50);
-       
-        //Comfiguras de los botones, en esta parte le ponemos las imagenes y los colocamos dentro del panel que va al sur
+
         buttonToRight.setBounds(850, 25, 50, 50);
         buttonToLeft.setBounds(750,25,50,50);
         buttonShutdown.setBounds(100,25,100,60);
         imageToButtonLeft.setText("<--");
-        imageToButtonRigth.setText("-->");
+        imageToButtonRight.setText("-->");
 
+
+        navbar.add(buttonShutdown);
+        navbar.add(buttonToRight);
+        navbar.add(buttonToLeft);
+
+        navbar.setBounds(x, y, width, height);
+        navbar.setBackground(new Color(255,0,0)); //Los BackGround es una prueba de ubicacion
+        navbar.setLayout(null);
+
+        return this.navbar;
     }
 
-
-    private void assamble(){
-        container.add(imageOfContainer);
-        buttonToRight.add(imageToButtonRigth);
-        buttonToLeft.add(imageToButtonLeft);
-        menu.add(buttonToRight);
-        menu.add(buttonToLeft);
-        menu.add(buttonShutdown);
-        window.add(menu); 
-        window.add(container);
+    public void showNavBar(boolean signal){
+        this.navbar.setVisible(signal);
     }
 
-    private void display(){
-        window.setVisible(true);
+    //Implementar un metodo de decoracion, es decir alimetar a la vista con el modelo
+    //Una vez capturado
+
+    private void assambleAll(){
+        JFrame windowsMain   = this.setUpWindow(1000, 600, "Mi ventana Principal");
+        JPanel containerMain = this.setUpCotainer(150, 50, 700, 300);
+        JPanel navBar        = this.setUpNavBar(0,470,1000,100);
+        windowsMain.add(navBar);
+        windowsMain.add(containerMain);
     }
 
+    //Probablemente este metodo se quite y se controle directamente en el controlador
+    private void showAll(){
+        this.window.setVisible(true);
+    }
+   
     public void initView(){
-        this.setting();
-        this.assamble();
-        this.display();
+        
+        this.assambleAll();
+        this.showAll();
     }
 
-    class SubPanelManage{
-        private JLabel image;
-        private JPanel container;
-        private JTextArea infoOfThing;
-        private MultipanelView mpv;
-
-        public void setImage(JLabel image){ this.image = image; }
-        public void setMainView(MultipanelView mpv){ this.mpv = mpv;}
-        public void setContainer(JPanel panel){ this.container = panel; }
-        public void setTextArea(JTextArea textArea){ this.infoOfThing = textArea; }
-
-        public JPanel getContainer(){ return this.container; }
-        public JTextArea getTextArea(){ return this.infoOfThing; }
-        public MultipanelView getViewMain(){ return this.mpv; }
-
-        private void assemblePanel(){
-            container.setSize(500,300);
-            container.setBounds(250, 200, 500, 300);
-            //Colocar imagen en el contendor
-            infoOfThing.setBounds(400, 100, 500, 300);
-            infoOfThing.setText("Hola aqui quiza va texto");
-            infoOfThing.setToolTipText("Hola va texto");
-        }
-
-        private void joinComponent(){
-            window.add(menu);
-            window.add(this.container);
-            window.add(this.infoOfThing);
-        }
-
-        private void noShow(){
-            window.setVisible(false);
-        }
-
-        private void show(){
-            window.setVisible(false);
-        }
-
-    }
+    //public static void main(String[] args) { MultipanelView mpv = new MultipanelView(); mpv.initView();}
 }
