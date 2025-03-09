@@ -13,3 +13,22 @@ Si queremos hacer el multipanel debes de hacer un panel generico
 para que cada que se le cambie los datos se le asigne un nuevo personaje
 este debe de tener cierta estructura y se deben de generar tanto objetos se pueda
 dependiendo del csv
+
+ /*
+    private void assambleAll(){
+        JFrame windowsMain   = this.setUpWindow(1000, 600, "Mi ventana Principal");
+        JPanel containerMain = this.setUpCotainer(150, 50, 700, 300);
+        this.setContainer(new JPanel());
+        JPanel navbar        = this.setUpCotainer(0,470,1000,100);
+        JButton button1      = this.setUpButton(850, 25, 50, 50, "IZ");
+        this.setButton(new JButton()); //Nota para usar un nuevo objeto se debe intancias otra vez
+        JButton button2      = this.setUpButton(750,25,50,50,"DE");
+        this.setButton(new JButton());
+        JButton buttonShut   = this.setUpButton(100,25,100,60, "APa");
+        button1.setName("Apagar");
+        navbar.add(button1);
+        navbar.add(button2);
+        navbar.add(buttonShut);
+        windowsMain.add(navbar);
+        windowsMain.add(containerMain);
+    }

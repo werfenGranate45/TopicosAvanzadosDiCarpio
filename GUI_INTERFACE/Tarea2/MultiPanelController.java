@@ -1,57 +1,49 @@
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 
 import javax.swing.JOptionPane;
 
-public class MultiPanelController {
-    private MultipanelView mpv;
+public class MultiPanelController extends MouseAdapter{
     private UserPanelView upv;
+    private MultiPanelModel mpm;
 
     public MultiPanelController(){
-        mpv = new MultipanelView();
         upv	= new UserPanelView();
+        mpm = new MultiPanelModel();
     }
-
-    public void setMultipanelView(MultipanelView mpv){ this.mpv = mpv; }
-    public MultipanelView getMultipanelView(){ return this.mpv; } 
-
-    public void start(){
-        MouseController mc = new MouseController();
-    } 
 
     private void shutDown(){
         JOptionPane.showMessageDialog(null, "Ha finalizado", "Se Acavoid", JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
     }
 
-    //Controlador para darle vida al programa
-    private class MouseController implements MouseListener{
+    private void getFieldText(){
+        String rutaUser = upv.getFieldText().getText();
+        mpm.setPathToModels(rutaUser);
+    }
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if( e.getComponent() == mpv.getButtonOff()){
-                shutDown();
-            }
-           
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getComponent() == upv.getButtonSub()) {
+            this.getFieldText();
+            upv.enableUserPanel(false);
         }
+        if(e.getComponent() == upv.getButtonCan()){
+            this.shutDown();
+        }
+    }
 
-        @Override
-        public void mousePressed(MouseEvent e) {}
+    private void addListeners(){
+        upv.getButtonCan().addMouseListener(this);
+        upv.getButtonSub().addMouseListener(this);
+    }
+    
 
-        @Override
-        public void mouseReleased(MouseEvent e) {}
-
-        @Override
-        public void mouseEntered(MouseEvent e) {}
-
-        @Override
-        public void mouseExited(MouseEvent e) {}
-        
-        //Acciones a realizar cuando se presiona cada boton
-        /**
-         * Este es la accion para el boton de apagar
-         */
-       
-    }     
+    public void run(){
+        upv.assamble();
+        this.addListeners();
+    }
 }
+
 
