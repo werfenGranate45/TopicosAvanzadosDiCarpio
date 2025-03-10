@@ -1,5 +1,7 @@
-package View;
+package view;
+
 import java.awt.Color;
+import java.awt.Component;
 
 //Para crear el paquete se debe tener el mismo nombre que la carpeta donde se aloja
 import javax.swing.ImageIcon;
@@ -8,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import MultiPanelController.java;
+import models.MultiPanelModel;
 
 /**
  * Como va tener la ventana los componentes tendra
@@ -64,8 +66,8 @@ public class ManageView {
         window.setSize(width, height);
         window.setTitle(titleWindow);
         window.setIconImage(new ImageIcon("RecursoLeft4Dead\\Images_use\\IconProgram.jpeg").getImage());
-        //window.setUndecorated(true);
-        //window.setBackground(new Color(0,0,0,0));
+        window.setUndecorated(true);
+        window.setBackground(new Color(0,0,0,0));
         window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.setLayout(null);
@@ -90,7 +92,7 @@ public class ManageView {
      * x = (W_Ventana - W_Panel) / 2  
      * y = (H_Ventana - H_Panel) / 2  
      */
-    public JPanel setUpCotainer(int x, int y, int width, int height){
+    public JPanel setUpPanel(int x, int y, int width, int height){
         JPanel container = new JPanel();
         ///imageOfContainer.setBounds(0, 0, width, height); Se quita y se configura aparte
         container.setBounds(x,y,width, height);
@@ -135,7 +137,7 @@ public class ManageView {
         JButton button = new JButton();
         button.setBounds(x, y, width, height);
         button.setText(text);
-        
+    
         return button;
     }
 }

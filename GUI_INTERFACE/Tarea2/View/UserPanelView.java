@@ -1,4 +1,4 @@
-package View;
+package view;
 import java.awt.Color;
 import java.awt.Font;
 
@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import MultiPanelModel;
+import models.MultiPanelModel;
 
 public class UserPanelView extends ManageView{
       private JTextField pathField;
@@ -64,36 +64,39 @@ public class UserPanelView extends ManageView{
        * Apartado para todas las construcciones y la arquitectura de la aplicacion
        * Usaremos los postulados de POO para acceder a los atributos por medio
        * de los getteres, claro que cuando usemos las funciones setUps 
-       * Ya estaran listos para usarse 
+       * Ya estaran listos para usarse debido a que ya estan configurados
        * @see setUpButton
        */
 
-      private void setUpButtonSub(int x,int y, int widht, int height, String text){
-         this.buttonSumbmit = super.setUpButton(x, y, widht, height, text);
+      private void setUpButtonSub(){
+         this.buttonSumbmit = super.setUpButton(600, 150, 100, 50, "Enviar");
       }
 
-      private void setUpButtonCan(int x, int y, int widht, int height, String text){
-         this.buttonCancel = super.setUpButton(x, y, widht, height,text);
+      private void setUpButtonCan(){
+         this.buttonCancel = super.setUpButton(450, 150, 100, 50,"Cancelar");
       }
 
-      private void setUpUserView(int x, int y, int widht, int height){  
-         this.panelUser = super.setUpCotainer(x, y, widht, height);
-      }
-
-
-      private void setUpAll(){
-         this.setUpTextField(10, 55, 75, 590, 50);
-         this.setUpButtonSub(600, 150, 100, 50, "Enviar");
-         this.setUpButtonCan(450, 150, 100, 50,"Cancelar");
-         this.setUpUserView(150,200,700,200);
+      private void setUpUserView(){  
+         this.panelUser = super.setUpPanel(150,200,700,200);
       }
 
       /**
-       * La verdad esta mal organizado pero simplemente es un decorador que no pertenece
-       * al modelo al que se va mostrar entoces esta bien supungo
+       * Este metodo sirve para configurar de una todos los atributos de las clases
+       */
+      private void setUpAll(){
+         this.setUpTextField(10, 55, 75, 590, 50);
+         this.setUpButtonSub();
+         this.setUpButtonCan();
+         this.setUpUserView();
+      }
+
+      /**
+       * La verdad esta mal organizado pero simplemente es un metodo que decora los componentes de la clase
+       * en esta vista no usamos un modelo para alimentar la vista sino recursos publicos de la computadora
+       * que se esten usando.
        */
       private void decoratorComponets(){
-         ImageIcon x       = super.escaledImage("RecursoPublicos\\FondoParaCapturaPath.jpg",700,200);
+         ImageIcon x       = super.escaledImage("_RecursoPublicos\\FondoParaCapturaPath.jpg",700,200);
          JLabel labelPanel = super.setUpLabelImage(0, 0, 700, 200, x);
          JLabel advice     = super.setUpLabelImage(195, 0, 400, 55, null);
          advice.setText("Capture la ruta de su modelo.");
@@ -104,11 +107,14 @@ public class UserPanelView extends ManageView{
          this.panelUser.add(labelPanel);
       }
 
-      //Este metodo servira para ensamblar todos los componentes en uno
-      //Solo vamos usar el atributo ventana de la clase padre
-      public void assamble(){
+      /**
+       * Este metodo hace la accion de ensamblar todos los atributos del panel y lo añade a la ventana
+       * @apiNote El atributo ventana esta en la clase padre 
+       * NOTA: Tengo duda si de verdad deberiamos configurar la ventana y agregar
+       * el componente del panel ensamblado a la ventan o si usar un metodo aparte
+       */
+      private void assambleView(){
          this.setUpAll();
-        
          super.setUpWindow(1000, 600, "User View");
          
          this.panelUser.add(pathField);
@@ -117,13 +123,18 @@ public class UserPanelView extends ManageView{
          this.decoratorComponets();
 
          super.getWindow().add(this.panelUser);
-         super.getWindow().setVisible(true);
-
       }
 
+      /**
+       * Metodo que sirve para el controlador para descativar y esconder el componente
+       * @param signal Boleano que indica si se despliega y esconde el componente
+       */
       public void enableUserPanel(boolean signal){
-         this.panelUser.setEnabled(signal);
-         this.panelUser.setVisible(signal);
-
+         if(signal){
+            this.assambleView();
+            this.getWindow().setVisible(signal);
+         }else{
+            this.getWindow().setVisible(signal);
+         }
       }
 }
