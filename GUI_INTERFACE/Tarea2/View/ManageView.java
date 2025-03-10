@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Component;
 
 //Para crear el paquete se debe tener el mismo nombre que la carpeta donde se aloja
 import javax.swing.ImageIcon;

@@ -1,8 +1,7 @@
 package controllers;
 
-import java.awt.Component;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JOptionPane;
 
@@ -42,30 +41,52 @@ public class MultiPanelController extends MouseAdapter{
     public MultiPanelModel getModel(){ return this.mpm; }
 
     
-    protected void shutDown(){
+    private void shutDown(){
         JOptionPane.showMessageDialog(null, "Ha finalizado", "Se Acavoid", JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
     }
 
-    protected void connectModeltoView(String inputUser){
+    private void connectModeltoView(String inputUser){
         mpm.setPathToModels(inputUser);
         mpv.setModel(mpm);
         spv.setModel(mpm);
     }
 
-    protected void addMouseListeners(Component components[], MouseListener mouselistener){
-        for (int i = 0; i < components.length; i++) 
-            components[i].addMouseListener(mouselistener);
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(e.getComponent() == upv.getButtonSub()){
+            //Que se realiza en el parte del backend obtener el input del usuario
+            String userInput = upv.getFieldText().getText();
+            this.connectModeltoView(userInput);
+            //Que se hace de parte en la vista solo se inabilita y habre la otra
+            upv.enableUserPanel(false);
+            this.runMainView(true);
+        }
+        if(e.getComponent() == mpv.getButtonStart()){
+            System.out.println("Hola");
+        }
+        if(e.getComponent() == upv.getButtonCan() 
+            || e.getComponent() == mpv.getButtonShut()
+            || e.getComponent() == spv.getButtonShut()  )
+            shutDown();
+        
+        super.mouseClicked(e);
     }
-
-    
 
     /**
     * Para que jale todo lo que hemos hecho tenemos que colocarlo dentro del controlador asi bien perron
     * Quien lo diria no??
     */
-    protected void runView(boolean signal, Component comp[], MouseListener MouseListener){
-        this.addMouseListeners(comp, MouseListener);
+    public void runView(){
+        upv.enableUserPanel(true);
+        upv.getButtonSub().addMouseListener(this);
+        upv.getButtonCan().addMouseListener(this);
+    }
+
+    private void runMainView(boolean signal){
+        mpv.enableMainPanel(signal);
+        mpv.getButtonShut().addMouseListener(this);
+        mpv.getButtonStart().addMouseListener(this);
     }
 }
 
