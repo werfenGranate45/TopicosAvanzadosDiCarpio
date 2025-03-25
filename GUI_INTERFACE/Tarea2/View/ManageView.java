@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Font;
 
 //Para crear el paquete se debe tener el mismo nombre que la carpeta donde se aloja
 import javax.swing.ImageIcon;
@@ -8,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import models.MultiPanelModel;
 
@@ -93,12 +96,58 @@ public class ManageView {
      */
     public JPanel setUpPanel(int x, int y, int width, int height){
         JPanel container = new JPanel();
-        ///imageOfContainer.setBounds(0, 0, width, height); Se quita y se configura aparte
         container.setBounds(x,y,width, height);
         container.setBackground(new Color(0, 255, 0)); //Los BackGround es una prueba de ubicacion
         container.setLayout(null);
 
         return container;
+    }
+
+    /**
+     * Metodo que te construye una text Area con metodos comunues y nesesarios 
+     * para cualquier textArea, No tiene layauot y tiene un Font por defecto
+     * El asombroso Comic Sans
+     * @param x posicion del componente en X
+     * @param y posicion del componente en Y
+     * @param width Tamaño del Ancho
+     * @param height Tamaño de lo Largo
+     * @return Te regresa un objeto de TextArea
+     */
+    public JTextArea setUpTextArea(int x, int y, int width, int height){
+        JTextArea textArea = new JTextArea();
+
+        textArea.setBounds(x,y,width,height);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setEditable(false);
+        textArea.setFocusable(false);
+        textArea.setLayout(null);
+        textArea.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+
+        return textArea;
+    }
+
+    /**
+       * Este metodo configura un Campo de texto para usarse en el programa 
+       * Este es el atributo que tiene la vista y tiene Comic Sans 
+       * predetermindado como letra
+       * @param columns Numero de columnas
+       * @param x Pocision en X adentro del panel
+       * @param y Pocision en Y adentro del panel
+       * @param width Ancho del campo de texto
+       * @param height Largo del campo de texto
+       * @return Un objeto de tipo JTextField
+       */
+    public JTextField setUpTextField(int columns, int x, int y, int width, int height){
+        JTextField textField = new JTextField();
+
+        textField.setColumns(columns);
+        textField.setBounds(x, y, width, height);
+        textField.setBorder(null);
+        textField.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+
+        return textField;
+
     }
 
     /**

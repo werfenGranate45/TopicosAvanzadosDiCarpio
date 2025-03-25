@@ -43,22 +43,8 @@ public class UserPanelView extends ManageView{
       public JButton getButtonSub(){ return this.buttonSumbmit; }
       public JButton getButtonCan(){ return this.buttonCancel; }
 
-      /**
-       * Este metodo configura un Campo de texto para usarse en el programa 
-       * Este es el atributo que tiene la vista
-       * @param columns Numero de columnas
-       * @param x Pocision en X adentro del panel
-       * @param y Pocision en Y adentro del panel
-       * @param width Ancho del campo de texto
-       * @param height Largo del campo de texto
-       * No retorna nada es un setUP si quieres acceder con el usas los gettees
-       */
-      private void setUpTextField(int columns, int x, int y, int width, int height){
-         this.pathField.setColumns(columns);
-         this.pathField.setBounds(x, y, width, height);
-         this.pathField.setBorder(null);
-         this.pathField.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-      }
+      
+     
 
       /**
        * Apartado para todas las construcciones y la arquitectura de la aplicacion
@@ -70,6 +56,10 @@ public class UserPanelView extends ManageView{
 
       private void setUpButtonSub(){
          this.buttonSumbmit = super.setUpButton(600, 150, 100, 50, "Enviar");
+      }
+
+       private void setUpPathField(){
+        this.pathField = super.setUpTextField(10, 55, 75, 590, 50);
       }
 
       private void setUpButtonCan(){
@@ -84,7 +74,7 @@ public class UserPanelView extends ManageView{
        * Este metodo sirve para configurar de una todos los atributos de las clases
        */
       private void setUpAll(){
-         this.setUpTextField(10, 55, 75, 590, 50);
+         this.setUpPathField();
          this.setUpButtonSub();
          this.setUpButtonCan();
          this.setUpUserView();
