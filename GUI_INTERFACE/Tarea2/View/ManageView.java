@@ -123,6 +123,7 @@ public class ManageView {
         textArea.setFocusable(false);
         textArea.setLayout(null);
         textArea.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+        textArea.setText("Default Text Es un Ester Egg");
 
         return textArea;
     }

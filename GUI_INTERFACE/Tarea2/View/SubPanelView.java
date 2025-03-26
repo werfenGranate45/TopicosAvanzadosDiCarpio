@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -16,9 +17,9 @@ public class SubPanelView extends ManageView{
     private JTextArea infoText;
     private JButton buttonToLeft, buttonToRight, buttonToShutDown;
     private JPanel navbar, container, imageContainer;
-    private JPanel[] imageContainers, containers;
-    private int limit;
-    private JTextArea[] infoTextAreas;
+    //private JPanel[] imageContainers, containers;
+    //private int limit;
+    //private JTextArea[] infoTextAreas;
     
     public void setButtonToLeft(JButton buttonToLeft) { this.buttonToLeft = buttonToLeft; }
     public void setInfoText(JTextArea infoText) { this.infoText = infoText; }
@@ -69,53 +70,62 @@ public class SubPanelView extends ManageView{
         this.imageContainer = super.setUpPanel(50, 10, 400, 475);
         this.imageContainer.setBackground(new Color(255, 0, 0));
     }
-
-    private void decoratorComponets(){
-        
+    
+    /**
+     * Este metodo se tratarea de decorar por completo todo el subpanel
+     * Es decir sera como una cominacion de Unir, configurar y decorar
+     * cada vista del subpanel se guardara en una lista de tipo SubPanel
+     * 
+     * Esa es la idea y mandarla -> con todo con el container principal
+     * E incluida la navBar
+     */
+    private void decoratorComponetsAll(){
         ArrayList<String[]> paths = super.getModel().getAllModels();
-        limit = paths.size()-1;
-        JLabel images[]      = new JLabel[limit]; 
-        this.imageContainers = new JPanel[limit];
-        this.containers      = new JPanel[limit];
+        ArrayList<JPanel> views = new ArrayList<>();
+        int models = paths.size()-1;
 
-        for (int i = 0; i < limit; i++) {
-            images[i] = super.setUpLabelImage(0, 0, 400, 475, escaledImage((paths.get(++i)[1]), 400,475));
-            //En containeres agregar el info text
-            imageContainers[i] = (JPanel) setUpPanel(50, 10, 400, 475).add(images[i]);
-            containers[i]      = (JPanel) setUpPanel(150, 100, 900, 500).add(imageContainers[i]);
-            
+        for (String[] strings : paths) {
+            ImageIcon icon = new ImageIcon(strings[1]);
+            JLabel imagen  = super.setUpLabelImage(0, 0, 400, 475, icon);
+
+            this.setUpAll();
+            this.assambleNavbar();
+            this.imageContainer.add(imagen);
+            this.container.add(this.imageContainer);
+            this.container.add(this.infoText);
+            views.add(container); //Retornalos
         }
+    }
+
+    private void assambleNavbar(){
+        this.setUpNavbar();
+        this.setUpButtonShut();
+        this.setUpButtonLeft();
+        this.setUpButtonRight();
+
+        navbar.add(this.buttonToLeft);
+        navbar.add(this.buttonToRight);
+        navbar.add(this.buttonToShutDown);
+
     }
 
     private void setUpAll(){
         this.setUpImagePanel();
-        //this.setUpContainer();
-        this.setUpNavbar();
-        //this.setUpTextArea();
-        this.setUpButtonShut();
-        this.setUpButtonLeft();
-        this.setUpButtonRight();
+        this.setUpContainer();
+        this.setUpTextArea();
     }
 
     private void assambleSubView(){
         
-       this.setUpAll();
-       navbar.add(this.buttonToLeft);
-       navbar.add(this.buttonToRight);
-       navbar.add(this.buttonToShutDown);
-       JFrame frames[] = new JFrame[limit];
+      // this.setUpAll();
+      
+       //JFrame frames[] = new JFrame[limit];
        //Al container se le asignara nueve paneles diferentes y/o nueve containeres diferentes
-       for (int i = 0; i < limit; i++ ){
-            super.setUpWindow(1200, 700, "Sub Panel No"+(i+1));
-            super.getWindow();
-
-            frames[i].add(this.containers[i]);
-            frames[i].add(navbar);
-       }
+       //Ver las tareas de los paneles
+      
        container.add(this.imageContainer);
        container.add(this.infoText);
       
-       
        super.getWindow().add(this.container);
        super.getWindow().add(this.navbar);
     }
