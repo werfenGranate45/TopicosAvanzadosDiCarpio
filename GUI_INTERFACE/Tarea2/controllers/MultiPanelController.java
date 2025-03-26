@@ -3,6 +3,7 @@ package controllers;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import models.MultiPanelModel;
@@ -54,16 +55,38 @@ public class MultiPanelController extends MouseAdapter{
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        JFrame view;
+        int selecter = 0;
+
         if(e.getComponent() == upv.getButtonSub()){
             //Que se realiza en el parte del backend obtener el input del usuario
             String userInput = upv.getFieldText().getText();
             this.connectModeltoView(userInput);
-            //Que se hace de parte en la vista solo se inabilita y habre la otra
+            //Que se hace de parte en la vista solo se inabilita y abre la otra
             upv.enableUserPanel(false);
             this.runMainView(true);
         }
         if(e.getComponent() == mpv.getButtonStart()){
-            System.out.println("Hola");
+            mpv.enableMainPanel(false);
+            this.runSubPanelView(true);
+        }
+        if(e.getComponent() == spv.getButtonToLeft()){
+
+            if(!(selecter == 0)){
+                view = this.selectView(selecter++);
+                view.setVisible(true);
+                view.setEnabled(true);
+                
+            }
+
+        }
+        if(e.getComponent() == spv.getButtonToRight()){
+            this.runSubPanelView(false);
+            if(!(selecter == mpm.getAllModels().size()-1)){
+                view = this.selectView(selecter--);
+                view.setVisible(true);
+                view.setEnabled(true);
+            }
         }
         if(e.getComponent() == upv.getButtonCan() 
             || e.getComponent() == mpv.getButtonShut()
@@ -87,6 +110,16 @@ public class MultiPanelController extends MouseAdapter{
         mpv.enableMainPanel(signal);
         mpv.getButtonShut().addMouseListener(this);
         mpv.getButtonStart().addMouseListener(this);
+    }
+
+     public JFrame selectView(int number){
+        return spv.getViews().get(number);
+    }
+    private void runSubPanelView(boolean signal){
+        spv.initialenableSubView(signal);
+        spv.getButtonToLeft().addMouseListener(this);
+        spv.getButtonToRight().addMouseListener(this);
+        spv.getButtonShut().addMouseListener(this);
     }
 }
 
