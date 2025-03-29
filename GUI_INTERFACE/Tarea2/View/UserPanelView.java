@@ -16,6 +16,7 @@ public class UserPanelView extends ManageView{
       private JButton buttonSumbmit;
       private JButton buttonCancel;
       private JPanel panelUser;
+      private JFrame win;
 
       public UserPanelView(){
          new ManageView();
@@ -105,14 +106,14 @@ public class UserPanelView extends ManageView{
        */
       private void assambleView(){
          this.setUpAll();
-         super.setUpWindow(1000, 600, "User View");
+         this.win = super.setUpWindow(1000, 600, "User View",true,new Color(0,0,0,0));
          
          this.panelUser.add(pathField);
          this.panelUser.add(buttonCancel);
          this.panelUser.add(buttonSumbmit);
          this.decoratorComponets();
 
-         super.getWindow().add(this.panelUser);
+         win.add(this.panelUser);
       }
 
       /**
@@ -122,9 +123,9 @@ public class UserPanelView extends ManageView{
       public void enableUserPanel(boolean signal){
          if(signal){
             this.assambleView();
-            this.getWindow().setVisible(signal);
+            this.win.setVisible(signal);
          }else{
-            this.getWindow().setVisible(signal);
+            this.win.setVisible(signal);
          }
       }
 }

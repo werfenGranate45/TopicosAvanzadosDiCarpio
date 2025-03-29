@@ -1,5 +1,5 @@
 ID,PathInfo,PathDeImagen
-1,Icon,C:\Users\Luis.Luisss\Documentos\TheCarpios\TopicosRepo\TopicosAvanzadosDiCarpio\GUI_INTERFACE\Tarea2\_RecursoVistas\Images_use\IconProgram.jpeg
-2,RecursoVistas\Info_use\Triangulo.txt,RecursoVistas\Images_use\Triangulo.jpg
-3,RecursoVistas\Info_use\Rectangulo.txt,RecursoVistas\Images_use\Rectangulo.jpg
-4,RecursoVistas\Info_use\Rombo.txt,RecursoVistas\Images_use\Rombo.jpg
+1,Icon,_RecursoVistas\Images_use\IconProgram.jpeg
+2,RecursoVistas\Info_use\Triangulo.txt,_RecursoVistas\Images_use\Rectangulo.jpg 
+3,RecursoVistas\Info_use\Rectangulo.txt,_RecursoVistas\Images_use\Triangulo.jpg
+4,RecursoVistas\Info_use\Rombo.txt,_RecursoVistas\Images_use\Rombo.jpg

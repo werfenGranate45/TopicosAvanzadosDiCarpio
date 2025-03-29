@@ -15,6 +15,7 @@ import models.MultiPanelModel;
 public class MainPanelView extends ManageView{
     private JPanel navbar, container;
     private JButton buttonStar, buttonShutDown;
+    private JFrame window;
 
     public MainPanelView(){
         super();
@@ -85,21 +86,21 @@ public class MainPanelView extends ManageView{
 
     private void assambleView(){
         this.setUpAll();
-        super.setUpWindow(1000, 600, "Main View");
+        this.window = super.setUpWindow(1000, 600, "Main View", true,new Color(0,0,0,0));
 
         this.navbar.add(this.buttonShutDown);
         this.navbar.add(this.buttonStar);
         this.decorateComponentes();
 
-        super.getWindow().add(this.navbar);
-        super.getWindow().add(this.container);
+        this.window.add(this.navbar);
+        this.window.add(this.container);
     }
 
     public void enableMainPanel(boolean signal){
         if (signal){
             this.assambleView();
-            this.getWindow().setVisible(signal);
+            this.window.setVisible(signal);
         }else
-            this.getWindow().setVisible(signal);
+            this.window.setVisible(signal);
     }
 }

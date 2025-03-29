@@ -24,21 +24,16 @@ import models.MultiPanelModel;
 
 //Sera un manager de las 3 vistas en la que vamos a trabajar
 public class ManageView {
-    private JFrame window;
     private MultiPanelModel theModelObject;
 
-    public void setWindow(JFrame window){this.window = window;}
     public void setModel(MultiPanelModel mpm){this.theModelObject = mpm; }
-    public JFrame getWindow(){ return this.window;  }
     public MultiPanelModel getModel(){ return this.theModelObject; }
 
     public ManageView(){
-        window             = new JFrame();
         theModelObject     = new MultiPanelModel();
     }
 
     public ManageView(JFrame window, MultiPanelModel mpm){
-        this.window = window;
         this.theModelObject = mpm;
     }
 
@@ -63,17 +58,20 @@ public class ManageView {
      * @param titleWindow Titulo de la ventana 
      * @return Objeto de tipo JFrame, que es la ventana que se utilizara
      */
-    public void setUpWindow(int width, int height, String titleWindow){
+    public JFrame setUpWindow(int width, int height, String titleWindow, boolean isUnDecorade,Color color){
+        JFrame window = new JFrame();
         
         window.setSize(width, height);
         window.setTitle(titleWindow);
         window.setIconImage(new ImageIcon("RecursoLeft4Dead\\Images_use\\IconProgram.jpeg").getImage());
-        window.setUndecorated(true);
-        window.setBackground(new Color(0,0,0,0));
+        window.setUndecorated(isUnDecorade);
+        window.setBackground(color);
         window.setResizable(false);
         window.setLocationRelativeTo(null);
         window.setLayout(null);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        return window;
     }
 
     /**
@@ -97,7 +95,7 @@ public class ManageView {
     public JPanel setUpPanel(int x, int y, int width, int height){
         JPanel container = new JPanel();
         container.setBounds(x,y,width, height);
-        container.setBackground(new Color(0, 255, 0)); //Los BackGround es una prueba de ubicacion
+        //container.setBackground(new Color(0, 255, 0)); //Los BackGround es una prueba de ubicacion
         container.setLayout(null);
 
         return container;
