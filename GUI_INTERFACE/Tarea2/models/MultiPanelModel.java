@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 /**
  * Un programa multipanel que va cambiar de imagen cada que aprieta una tecla 
  * Cada panel tendra la imagen del infectado, una descripcion del mismo y se reproduce el sonido de identicacion
@@ -27,70 +29,92 @@ import java.util.ArrayList;
   * + leerArchivo(string: path): String[]
   */
 
+  //Crear o buscar una clase que se llame Manage Files para la lectura, escritura y manejo de archivos
+
 public class MultiPanelModel {
 
-    /*
-     * Como modelo tendremos que usar las imagenes del Left
-     * Los sonidos de cada infectado
-     */
-
     private String pathToModels;
+    private ArrayList<String[]> theModels;
     private BufferedReader fileToRead;
+    private final String extesion = "csv";
 
-    public void setPathToModels(String path){ this.pathToModels = path; }
-    public String getPathToModels(){ return this.pathToModels; }
-
-    private void openFile(String path){
-
-        try {
-            fileToRead      = new BufferedReader(new FileReader(path));
-        } catch (Exception e) {
-            System.err.println("No se pudo abrir el archivo");
-            System.exit(0);
-        }
+    private boolean isCSV(){
+        return (pathToModels.endsWith(extesion)) ? true : false;
     }
 
-    private String[] readFile(String path){
-        this.openFile(path);
+    private void showMessageError(String message){
+        JOptionPane.showMessageDialog(null, 
+                                       message, 
+                                       "Error", 
+                                       JOptionPane.ERROR_MESSAGE);
+        System.exit(0);
+    }
+
+    private void openFile(){
+        if(this.isCSV())
+            try {
+                fileToRead      = new BufferedReader(new FileReader(this.pathToModels));
+            } catch (Exception e) {
+                this.showMessageError("No se pudo abrir el archivo.");
+            }
+        else
+            this.showMessageError("No es un archivo CSV.");
+    }
+
+    private String[] readFileCSV(){
+        
         String[] pathToModels = new String[100];
         int i = 0;
 
         try {
             fileToRead.readLine();
+
             while (fileToRead.ready()) 
                 pathToModels[i++] = fileToRead.readLine();
             
-            this.closeFile(fileToRead);
+            this.closeFile();
             
         } catch (Exception e) {
-            System.err.println("Se acavoid el programa");
-            System.exit(0);
+          this.showMessageError("No se pudo leer el archivo.");
         }
 
         return pathToModels;
     }
 
-    private ArrayList<String[]> splitLines(String[] readPaths){
+    private void splitLines(String[] readPaths){
         int i = 0;
-        ArrayList<String[]> dataSplit = new ArrayList<String[]>();
-        
+            
         do
-            dataSplit.add(readPaths[i++].split(","));
+            theModels.add(readPaths[i++].split(","));
         while(readPaths[i] != null);
 
-        return dataSplit;
     }
 
-    private void closeFile(BufferedReader dummyFile) throws IOException{ dummyFile.close(); }
+    private void closeFile() throws IOException{ 
+        this.fileToRead.close(); 
+    }
 
-    /**
-     * El split esta hecho y se almacena dentro de una lista de tipo String[]
-     * Donde cada String[] tiene una longitud de 3 y contiene las rutas de dirreccion 
-     * para las imagenes
-     * @return Un ArrayList de tipo String[]
-     */
-    public ArrayList<String[]> getAllModels(){
-        this.openFile(pathToModels);
-        return this.splitLines(this.readFile(pathToModels));
+    public void searchModel(){
+        this.openFile();
+        this.splitLines(this.readFileCSV());
+    }
+
+    public void setTheModels(ArrayList<String[]> theModels){
+        this.theModels = theModels;
+    }
+
+    public ArrayList<String[]> getTheModels(){
+        return this.theModels;
+    }
+
+    public void setPathToModels(String path){ 
+        this.pathToModels = path; 
+    }
+    public String getPathToModels(){ 
+        return this.pathToModels; 
+    }
+
+    public int sizeOfModels(){
+        return this.theModels.size();
     }
 }

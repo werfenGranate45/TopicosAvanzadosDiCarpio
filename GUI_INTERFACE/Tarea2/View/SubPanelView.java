@@ -1,8 +1,12 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Component;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -11,20 +15,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import models.MultiPanelModel;
 
 public class SubPanelView extends ManageView{
     private JTextArea infoText;
     private JButton buttonToLeft, buttonToRight, buttonToShutDown;
     private JPanel navbar, container, imageContainer;
-    private ArrayList<JFrame> views = new ArrayList<JFrame>();
+    private JLabel countLabel;
+    private JFrame window;
 
     public void setButtonToLeft(JButton buttonToLeft) { this.buttonToLeft = buttonToLeft; }
     public void setInfoText(JTextArea infoText) { this.infoText = infoText; }
     public void setButtonToRight(JButton buttonToRight) { this.buttonToRight = buttonToRight; }
     public void setNavbar(JPanel navbar){this.navbar = navbar;}
     public void setContainer(JPanel container){this.container = container; }
-    public void setViews(ArrayList<JFrame> views){this.views = views; }
 
     public JTextArea getInfoText() { return this.infoText; }
     public JButton getButtonToLeft() { return this.buttonToLeft; }
@@ -32,7 +35,6 @@ public class SubPanelView extends ManageView{
     public JButton getButtonShut(){ return this.buttonToShutDown; }
     public JPanel  getNavBar(){ return this.navbar; }
     public JPanel  getContainer(){ return this.container; }
-    public ArrayList<JFrame> getViews(){ return this.views; }
     
     public SubPanelView(){
         super();
@@ -41,7 +43,6 @@ public class SubPanelView extends ManageView{
         this.infoText       = new JTextArea();
         this.buttonToLeft   = new JButton();
         this.buttonToRight  = new JButton();
-        this.views          = new ArrayList<JFrame>();
     }
 
     private void setUpTextArea(){
@@ -53,15 +54,15 @@ public class SubPanelView extends ManageView{
     }
 
     private void setUpButtonLeft(){
-        this.buttonToLeft = super.setUpButton(800,10,100,70, "->");
+        this.buttonToLeft = super.setUpButton(650,10,100,70, "Lef");
     }
 
     private void setUpButtonRight(){
-        this.buttonToRight = super.setUpButton(650, 10, 100, 70,"<-");
+        this.buttonToRight = super.setUpButton(800, 10, 100, 70,"Der");
     }
 
     private void setUpContainer(){
-        this.container = super.setUpPanel(150, 100, 900, 500);
+        this.container = super.setUpPanel(50, 100, 900, 500);
     }
 
     private void setUpNavbar(){
@@ -70,6 +71,27 @@ public class SubPanelView extends ManageView{
 
     private void setUpImagePanel(){
         this.imageContainer = super.setUpPanel(50, 10, 400, 475);
+    }
+
+    private void setUpLabelCount(){
+        ImageIcon icon = super.escaledImage("_RecursoPublicos\\El_Panel_Nu",900,500);
+        this.countLabel = super.setUpLabel(500, 50, 400, 55, icon);
+    }
+
+    private String readFile(String path){
+        StringBuilder sb = new StringBuilder();
+        
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
     
     /**
@@ -82,39 +104,27 @@ public class SubPanelView extends ManageView{
      * 
      * Metodo raro le pondre ya directamente la ventana asi bien insano y bien configurado
      */
-    private void decoratorComponetsAll(){
+    private void decoratorComponetsAll(int numberModel){
         ImageIcon icon;
-        JLabel imagen;
-        JFrame windowOfSubpanel; 
-        ArrayList<String[]> paths = super.getModel().getAllModels();
-        int limit = paths.size()-1;
+        JLabel    imagen;
+        String    path;
 
-        for (int i = 1; i <= limit; i++) {
-            icon = escaledImage(paths.remove(i)[2],400 , 475);
-            imagen  = super.setUpLabelImage(0, 0, 400, 475, icon);
+        super.getModel().searchModel();
+        ArrayList<String[]> paths = super.getModel().getTheModels();
+        String[] model            = paths.get(numberModel);
 
-            this.setUpAll(); //Configura los elementos para la vista
-            this.assambleView(imagen);
-            this.assambleNavbar();
-            super.setUpWindow(1000, 700, "Panel No "+(i));
-            windowOfSubpanel = super.getWindow();
-            windowOfSubpanel.add(this.container);
-            windowOfSubpanel.add(this.navbar);
-            
-            this.views.add(windowOfSubpanel);   
-        }
-    }
+        icon   = super.escaledImage(model[2],400,475);
+        imagen = super.setUpLabel(0, 0, 400, 475, icon);
+        path   = model[1];
 
-    /**
-     * Nota por ahora solo usaremos para imagen, pero como parametro habra un objeto de tipo
-     * textArea para agregarlo al contenedor
-     * @param imagen
-     */
-    private void assambleView(JLabel imagen){
+        this.countLabel.setText("Panel No: "+numberModel);
+        this.countLabel.setForeground(new Color(255, 160, 122));
+        this.countLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
         this.imageContainer.add(imagen);
-        this.container.add(imageContainer);
-        this.container.add(this.infoText);
+        this.infoText.setText(readFile(path));
+        
     }
+
     private void assambleNavbar(){
         navbar.add(this.buttonToLeft);
         navbar.add(this.buttonToRight);
@@ -129,30 +139,42 @@ public class SubPanelView extends ManageView{
         this.setUpButtonShut();
         this.setUpButtonLeft();
         this.setUpButtonRight();
+        this.setUpLabelCount();
     }
 
-    //Necesitamos un metodo que en base a pulsar el boton de la derecha o izquierda acceda a la ventana de cada uno
-    //Por medio de un numero obtendremos la vista y la habilitamos
-   
+    private void assambleSubView(int number){
 
+        ImageIcon iconWallpaper = super.escaledImage("_RecursoPublicos\\VoidWall.jpg",900,500);
+        JLabel imagenWallpaper  = super.setUpLabel(0, 0, 900, 500, iconWallpaper);
+        ImageIcon iconNav       = super.escaledImage("_RecursoPublicos\\El_Panel_Nu.jpg",1200,100);
+        JLabel imagenNav        = super.setUpLabel(0, 0, 1200, 100, iconNav);
 
-    /**
-     * Codigo medio redundate a la verga si esta miedo mierdilla creo que se puede mejorar
-     * Alto cuidado puede que este medio mierdon
-     * @param signal
-     * @param windowInfo
-     */
-    public void initialenableSubView(boolean signal){
-        if(signal){
-            this.decoratorComponetsAll();
-            this.views.get(0).setVisible(signal);
-            this.views.get(0).setEnabled(signal);
+        this.setUpAll();                    //Configura los elementos para la vista
+        this.decoratorComponetsAll(number); //Decoramos los componentes
+        
+        this.window = super.setUpWindow(1000, 700, 
+                                  "Panel No "+(number), 
+                                  true, 
+                                  new Color(0,0,0,0)
+        );
+        
+        this.assambleNavbar();
+        this.navbar.add(imagenNav);
+        this.container.add(this.imageContainer);
+        this.container.add(this.infoText);
+        this.container.add(imagenWallpaper);
+        this.window.add(this.countLabel);
+        this.window.add(this.container);
+        this.window.add(this.navbar);
+    }
+
+    public void enableSubPanel(boolean signal, int number){
+        if (signal) {
+            this.assambleSubView(number);
+            this.window.setVisible(true);            
         }else{
-            this.views.get(0).setVisible(signal);
-            this.views.get(0).setEnabled(signal);
+            this.window.setVisible(false);
+            this.window.dispose(); //Liberamos la memoria de la ventana 
         }
-    }
-
-    public static void main(String args[]){
     }
 }
