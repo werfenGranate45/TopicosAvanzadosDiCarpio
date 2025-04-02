@@ -29,24 +29,30 @@ public class BookDatabase {
     }
 
     private LocalDate getActualDate(){
-        LocalDate dateToday         = LocalDate.now();
-        String pattern              = "dd/MM/yyyy";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-        String dateFormated         = dateToday.format(formatter);
-        CharSequence dateString     = dateFormated;
-        LocalDate a = LocalDate.parse(dateString, formatter);
-        
-        return a;
+        return LocalDate.now();
     }
 
     public void createBook(String title, String author, String publisher, int year, float price) throws SQLException {
         Statement statement = connection.createStatement();
-        String sqlTable  = "INSERT INTO book (title, author, publisher, year, created_at, updated_at)";
-        String sqlValues = "VALUES ('" + title + "', '" + author + "', '" + publisher + "', " + year + ", "+this.getActualDate() + ", "+ this.getActualDate() + ")";
-
-        String sql = sqlTable + sqlValues;
+        
+        String sql = "INSERT INTO book (title, author, publisher, year, created_at, updated_at) VALUES ('" + title + "', '" + author + "', '" + publisher + "', " + year + ", '" + getActualDate()+ "', '" + getActualDate()+ "')";
+        
         statement.executeUpdate(sql);
+        
         System.out.println("El libro ha sido creado.");
+    }
+
+    public void readBook() throws SQLException{
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM book");
+
+        while (resultSet.next()) {
+            String title     = resultSet.getString("title");
+            String author    = resultSet.getString("author");
+            String publisher = resultSet.getString("publisher");
+            int year         = resultSet.getInt("year");
+            System.out.println("Title: " + title + ", Author: " + author + ", Publisher: " + publisher + ", Year: " + year);
+        }
     }
 
     public void closeDatabase() throws SQLException {

@@ -61,9 +61,27 @@ fue creado asi bien insano, si usamos el Derby Network Client JBCD driver por de
 
 ----------------------------------------
 Asi se crea una base de datos con un servidor prendido
-Antes ejecutas el serverNetworkServer.bat puerto predeterminado es 1527
+Antes ejecutas el startNetworkServer.bat puerto predeterminado es 1527
 
 connect 'jdbc:derby://localhost:1527/;create=true';
 connect 'jdbc:derby://localhost:1527/<NameOfDataBase>';
 Para ejecutar archivos sql
+--java org.apache.derby.tools.ij  //Asi se inicial el cmd de ij, que ya no es necesario ya que nos ayuda Dbaver
 ij> run 'my_file.sql'; "Las Comillas son importantes cabron"
+
+Declaraciones chidas para sql en Dearby
+
+https://www.tutorialspoint.com/apache_derby/apache_derby_syntax.htm
+
+--------------------
+
+-- Explicacion de los objetos de la base de datos
+El objeto Connection se encarga de manejar por una parte los cambios dentro de la base de datos
+y de manejar la coneccion de la base de datos soportando sql statemnts 
+Practicamente un puente entre la base de datos y el programa de java
+
+El objeto statement: Es el que se encarga de soportar declaraciones de sql y ejecutarlos en la base de 
+datos para que este haga acciones nos manejamos con la base de datos
+
+El objeto resultset: Es el que se encarga de obtener todos los datos de la base de datos mediente sus metodos
+es mejorar mirar la documentacion para mejor usos
