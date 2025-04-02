@@ -1,0 +1,69 @@
+Verificar que si existe el derby_install
+
+IMPORTANTE SI SE EJECUTA LOS COMANDOS Y TODO EL ROLLO PERO SOLO DE FORMA TEMPORAL NO SE GUARDA LAS CONFIGURACIONES DEL 
+CLASSPATH, Y SE DEBEN DE EJECUTAR LOS BATS CADA VEZ QUE VAYAMOS A TRABAJAR HACEINDO QUE  EJECUTEMOS
+
+set CLASSPATH=%DERBY_HOME%\lib\derbytools.jar;%DERBY_HOME%\lib\derbynet.jar;.
+setNetwork.bat
+set CLASSPATH=%DERBY_HOME%\lib\derbyclient.jar;%DERBY_HOME%\lib\derbytools.jar;.
+setNetworkVClient.bat
+
+Cada vez que se quiera trabajar derby
+
+
+Verificacion del derby
+java org.apache.derby.tools.sysinfo
+
+Paso 2 ij Basic
+El ij es un herramienta interactiva son uso de SQL para poder crear databases asi todo insano
+
+--java org.apache.derby.tools.ij //Inicia el ij para poder manejar la base de datos
+
+Comandos basicos: Crear una base de datos
+
+ij> connect 'jdbc:derby:MyDbTest;create=true';
+ij> connect 'jdbc:derby:MyDbTest'; Asi conectas la base de datos
+
+//Este tambien usamos para poder conectarnos
+java -Dij.protocol=jdbc:derby: org.apache.derby.tools.ij
+ij> connect 'MyDbTest';
+
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+   ....
+); 
+
+insert into derbyDB values (1956,'Webster St.');
+
+ij> disconnect;
+
+ij> exit;
+
+-------------------
+Adicionalmente de puede ejecutar Scripts de sql
+ij> run 'my_file.sql'; // Desde el ij 
+java org.apache.derby.tools.ij my_file.sql //O desde el cmd @@@+
+---------------------
+Este es el comando clave para configurar la dependecia derby.jar, al CLASSPATH en windows desde CMD
+Solo que anteriormente solo debimos configurar la variable de entorno DERBY_HOME (Lo mismo que hicimos pero con DERBY_INSTALL) 
+set DERBY_HOME = C:\Apache\db-derby-10.17.1.0-bin ->> Primero
+set CLASSPATH=.;%DERBY_HOME%\lib\derby.jar --> Despues se agrega la dependicia derby.jar
+
+Una manera mas facil de iniciar el servidor lo hacemos con este comando
+java -jar derbyrun.jar server start
+
+If you use the embedded driver, by default the database is created in the same directory in which ij was started up. If you use the Derby Network Client JDBC driver, by default the database is created in the directory where the Network Server was started up; in other words, in DERBY_INSTALL/bin. 
+
+La base de datos se va crear por default en la misma direccion en la cual se uso el comando ij, donde este
+fue creado asi bien insano, si usamos el Derby Network Client JBCD driver por default la database es creado en el directorio DERBY_INSTALL/bin
+
+----------------------------------------
+Asi se crea una base de datos con un servidor prendido
+Antes ejecutas el serverNetworkServer.bat puerto predeterminado es 1527
+
+connect 'jdbc:derby://localhost:1527/;create=true';
+connect 'jdbc:derby://localhost:1527/<NameOfDataBase>';
+Para ejecutar archivos sql
+ij> run 'my_file.sql'; "Las Comillas son importantes cabron"

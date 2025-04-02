@@ -72,12 +72,13 @@ public class MainPanelView extends ManageView{
 
     //Consigo las direcciones asi bien insano
     private void decorateComponentes(){
-        ArrayList<String[]> paths = super.getModel().getAllModels();
+        super.getModel().searchModel();
+        ArrayList<String[]> paths  = super.getModel().getTheModels();
         ImageIcon imageOfContainer = super.escaledImage(paths.get(0)[2],800,400);
 
-        JLabel labelInfo  = super.setUpLabelImage(0, 0, 500, 100, null);
+        JLabel labelInfo  = super.setUpLabel(0, 0, 500, 100, null);
         labelInfo.setText("Bienvenido a mi nuevo post");
-        JLabel labelOfContainer = super.setUpLabelImage(0, 0, 800, 400, imageOfContainer);
+        JLabel labelOfContainer = super.setUpLabel(0, 0, 800, 400, imageOfContainer);
 
         this.navbar.setOpaque(true);
         this.navbar.setBackground(new Color(0,0,0,0));

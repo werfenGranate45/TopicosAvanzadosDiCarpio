@@ -160,7 +160,7 @@ public class ManageView {
      * @param image Imagen de la etiqueta
      * @return Un objeto de tipo imagen
      */
-    public JLabel setUpLabelImage(int x, int y, int width, int height, ImageIcon image){
+    public JLabel setUpLabel(int x, int y, int width, int height, ImageIcon image){
         JLabel labelOfImage = new JLabel();
         labelOfImage.setBounds(x, y, width, height);
         labelOfImage.setIcon(image);

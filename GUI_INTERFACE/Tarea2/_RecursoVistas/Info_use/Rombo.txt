@@ -1,4 +1,0 @@
-Nombre: Rombo
-Lados: 4
-Formula Area: (D + d)/2
-Tipo: Cuadrilatero

@@ -1,4 +1,0 @@
-Nombre: Rectangulo
-Lados: 4
-Formula Area: BxH
-Tipo; Geometrico

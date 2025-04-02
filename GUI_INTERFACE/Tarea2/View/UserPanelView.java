@@ -88,8 +88,8 @@ public class UserPanelView extends ManageView{
        */
       private void decoratorComponets(){
          ImageIcon x       = super.escaledImage("_RecursoPublicos\\FondoParaCapturaPath.jpg",700,200);
-         JLabel labelPanel = super.setUpLabelImage(0, 0, 700, 200, x);
-         JLabel advice     = super.setUpLabelImage(195, 0, 400, 55, null);
+         JLabel labelPanel = super.setUpLabel(0, 0, 700, 200, x);
+         JLabel advice     = super.setUpLabel(195, 0, 400, 55, null);
          advice.setText("Capture la ruta de su modelo.");
          advice.setForeground(new Color(255, 255, 255));
          advice.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
