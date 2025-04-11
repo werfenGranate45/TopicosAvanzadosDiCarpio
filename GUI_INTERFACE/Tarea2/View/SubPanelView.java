@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 
 public class SubPanelView extends ManageView{
@@ -22,6 +23,7 @@ public class SubPanelView extends ManageView{
     private JPanel navbar, container, imageContainer;
     private JLabel countLabel;
     private JFrame window;
+    private JScrollPane jScrollPane;
 
     public void setButtonToLeft(JButton buttonToLeft) { this.buttonToLeft = buttonToLeft; }
     public void setInfoText(JTextArea infoText) { this.infoText = infoText; }
@@ -43,6 +45,8 @@ public class SubPanelView extends ManageView{
         this.infoText       = new JTextArea();
         this.buttonToLeft   = new JButton();
         this.buttonToRight  = new JButton();
+        this.jScrollPane    = new JScrollPane();
+
     }
 
     private void setUpTextArea(){
@@ -78,6 +82,10 @@ public class SubPanelView extends ManageView{
         this.countLabel = super.setUpLabel(500, 50, 400, 55, icon);
     }
 
+    private void setUpScroll(){
+        
+    }
+
     private String readFile(String path){
         StringBuilder sb = new StringBuilder();
         
@@ -109,7 +117,7 @@ public class SubPanelView extends ManageView{
         JLabel    imagen;
         String    path;
 
-        super.getModel().searchModel();
+        //super.getModel().searchModel();
         ArrayList<String[]> paths = super.getModel().getTheModels();
         String[] model            = paths.get(numberModel);
 
@@ -122,7 +130,8 @@ public class SubPanelView extends ManageView{
         this.countLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 25));
         this.imageContainer.add(imagen);
         this.infoText.setText(readFile(path));
-        
+        this.navbar.setOpaque(true);
+        this.navbar.setBackground(new Color(0,0,0,0));
     }
 
     private void assambleNavbar(){
@@ -158,14 +167,19 @@ public class SubPanelView extends ManageView{
                                   new Color(0,0,0,0)
         );
         
+        this.jScrollPane.setBounds(500, 50, 300, 400);
+        this.jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        this.jScrollPane.setViewportView(this.infoText);
         this.assambleNavbar();
         this.navbar.add(imagenNav);
-        this.container.add(this.imageContainer);
-        this.container.add(this.infoText);
-        this.container.add(imagenWallpaper);
+         
+        this.container.add(this.imageContainer);         
+        this.container.add(this.jScrollPane);            
+        this.container.add(imagenWallpaper);             
         this.window.add(this.countLabel);
         this.window.add(this.container);
         this.window.add(this.navbar);
+        
     }
 
     public void enableSubPanel(boolean signal, int number){
