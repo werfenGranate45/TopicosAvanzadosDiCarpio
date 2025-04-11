@@ -85,3 +85,22 @@ datos para que este haga acciones nos manejamos con la base de datos
 
 El objeto resultset: Es el que se encarga de obtener todos los datos de la base de datos mediente sus metodos
 es mejorar mirar la documentacion para mejor usos
+
+Al momento de copilar lo tenemos que agregar al classPath en este caso es de sercidor de la red
+javac -cp "%DERBY_HOME%\lib\derbyclient.jar\derbyclient.jar" PersonDB.java PersonManager.java
+java -cp ".;%DERBY_HOME%\lib\derbyclient.jar" PersonManager
+
+
+
+Pasos definitivos 
+
+Primero Escribir el Programa bien
+
+2_ Levantar el servidor por medio del Script de bat en Apache Derby
+3_ Entrar a Debarby para mejor visualizacion
+4_ Copilar el programa agregandole al CLASSPATH usando eso
+
+javac -cp "%DERBY_HOME%\lib\derbyclient.jar\derbyclient.jar" PersonDB.java PersonManager.java
+java -cp ".;%DERBY_HOME%\lib\derbyclient.jar" PersonManager
+
+5_ Debuggear

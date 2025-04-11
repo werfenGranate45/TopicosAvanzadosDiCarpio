@@ -1,4 +1,3 @@
-package Another_try;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +7,6 @@ import java.sql.SQLException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PersonDB {
     /*
@@ -25,8 +23,8 @@ public class PersonDB {
 
     //Los datos necesarios para conectarse a la base de datos
     private final String JDBC_URL = "jdbc:derby://localhost:1527/TestDB;";
-    private final String USER     = ""; // Usuario de la base de datos
-    private final String PASSWORD = ""; // Contraseña de la base de datos
+    //private final String USER     = ""; // Usuario de la base de datos
+    //private final String PASSWORD = ""; // Contraseña de la base de datos
 
     //Las variables para el manejo de la conexion de la base de datos 
     private Connection connection;   
@@ -41,7 +39,7 @@ public class PersonDB {
 
     //Este metodo conectaremos a la base de datos
     public void openDatabase() throws SQLException{
-        connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+        connection = DriverManager.getConnection(JDBC_URL);
         System.out.println("Si ve esto, usted se ha conectado a la base de datos.");
     }
 
@@ -50,7 +48,7 @@ public class PersonDB {
         String createSQL;
         
         statement = connection.createStatement();
-        createSQL =  "INSERT INTO person (name, last_name, created_at, updated_at)";
+        createSQL =  "INSERT INTO person (name, last_name, created_at, update_at)";
         createSQL += "VALUES ('" + name + "', '" + lastName + "', '" + getActualDate() + "', '" + getActualDate() + "')";
         
         statement.executeUpdate(createSQL); //Este metodo se encarga de inserccion, actualizacion y eleminacion de datos
@@ -58,27 +56,33 @@ public class PersonDB {
     }
 
     //Este metodo almacena y obtiene los elementos de la tabla persona en la DB
-    public void getAll() throws SQLException{
-        String sqlGet = "SELECT id_person FROM person";
-        String name, lastName, createdAt, updatedAt;
-        int index = 1, id;
+    public ArrayList<String> getAll() throws SQLException{
+        listPerson = new ArrayList<String>();
+        String sqlGet = "SELECT * FROM person";
+        String name, lastName, createdAt;
+        int id;
 
         //Este metodo se encarga de la consulta de datos
-        statement = connection.createStatement(ResultSet.CONCUR_READ_ONLY,ResultSet.FETCH_FORWARD); 
+        //statement = connection.createStatement(ResultSet.CONCUR_READ_ONLY,ResultSet.FETCH_FORWARD); 
+        //No ocupo scroll ni updates lo dejamos asi
+        statement = connection.createStatement();
         resultSet = statement.executeQuery(sqlGet); //Este metodo se encarga de la consulta de datos
         
+        /*
+         * Ese index es el de la columna no del id entoces esta mal
+         * es mejor usar el nombre de la columna o el numero de la columna propia
+         */
         while (resultSet.next()) {
-            id        = resultSet.getInt(index);
-            name      = resultSet.getString(index);
-            lastName  = resultSet.getString(index);
-            createdAt = resultSet.getDate(index).toString();
-            index++;
+            id        = resultSet.getInt("id_person");
+            name      = resultSet.getString("name");
+            lastName  = resultSet.getString("last_name");
+            createdAt = resultSet.getDate("update_at").toString();
+            listPerson.add(id + " " +name +" "+ lastName + " "+ createdAt);
         }
+
+        return listPerson;
     }
 
-    public void getByID(int id){
-        //TODO implementar metodo para obtener un elemento de la tabla por ID o nombre
-   }
     //Este metodo se encarga de cerrar la base de datos
     public void closeDatabase() throws SQLException{
         if (connection != null) {
