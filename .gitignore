@@ -1,2 +1,10 @@
-#Archivos que no se subiran#
+#Archivos que no se subiran
 *.class
+*.log
+#La carpeta que no se subira
+database
+.vscode/
+.*jar
+README.md
+derby.log
+derby.properties
