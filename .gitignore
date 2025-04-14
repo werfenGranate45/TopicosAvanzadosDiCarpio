@@ -2,7 +2,6 @@
 *.class
 *.log
 #La carpeta que no se subira
-database/
 .vscode/
 .*jar
 derby.log
