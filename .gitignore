@@ -1,3 +1,9 @@
-#Archivos que no se subiran#
+#Archivos que no se subiran
 *.class
 *.log
+#La carpeta que no se subira
+database/
+.vscode/
+.*jar
+derby.log
+derby.properties
