@@ -104,3 +104,5 @@ javac -cp "%DERBY_HOME%\lib\derbyclient.jar\derbyclient.jar" PersonDB.java Perso
 java -cp ".;%DERBY_HOME%\lib\derbyclient.jar" PersonManager
 
 5_ Debuggear
+
+OJO Si la instancia de de dbeaver esta abierta no funciona en Java, por lo que solo hay que tener una instancia abierta

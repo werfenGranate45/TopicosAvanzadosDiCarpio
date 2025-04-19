@@ -4,7 +4,5 @@
 #La carpeta que no se subira
 database
 .vscode/
-README.md
 derby.log
 derby.properties
-test/
