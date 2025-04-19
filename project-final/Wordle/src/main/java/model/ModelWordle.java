@@ -9,7 +9,7 @@ public class ModelWordle {
     private int pkWord;
     private ManagerDB managerDB;
     private final String[] metaData = {
-        "jdbc:./database/WordleDB",
+        "jdbc:derby:./database/WordleDB",
         "words",
         "PKWord",
         "word"
