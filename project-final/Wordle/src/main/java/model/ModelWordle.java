@@ -1,5 +1,5 @@
 package main.java.model;
-import io.github.werfen.managerdb.ManagerDB;
+import main.java.managerdb.ManagerDB;
 
 import java.util.Random;
 
