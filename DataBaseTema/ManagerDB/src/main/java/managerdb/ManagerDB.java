@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Clase generica que tiene como funcionamiento conectar a la base de datos 
+ * Clase de uso generica que tiene como funcionamiento conectar a la base de datos 
  * usandolo como dependencia con cualquier modelo que se vaya usar
  * cabe recalcar que es la metodologia usando Derby 
  * 

@@ -2,7 +2,8 @@
 *.class
 *.log
 #La carpeta que no se subira
-database
+database/
+bin/
 .vscode/
 derby.log
 derby.properties

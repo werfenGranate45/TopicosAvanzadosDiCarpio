@@ -146,9 +146,6 @@ public class ViewWordle {
 
     private void setUpLabelMain(){
         labelMain.setBounds(0, 0, 1200, 800);
-        labelMain.setIcon(
-            new ImageIcon("src\\main\\resources\\WallRoble.jpg"
-        ));
     }
 
     private void setUpLabelSkull(){

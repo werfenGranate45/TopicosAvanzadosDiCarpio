@@ -14,12 +14,14 @@ public class ModelWordle {
         "PKWord",
         "word"
     };
+    
+    //Verificar que upperloweLimit sea menor que upperLimit+1
    
     /**
      * Constructor que inicializa el limite superior y limite donde se buscara la llave
      * primaria dentro de la base de datos e inicializa un objeto de tipo ManagerDB
      */
-    public ModelWordle(int upperLimit, int lowerLimit){
+    public ModelWordle(int lowerLimit, int upperLimit){
         this.upperLimit = upperLimit+1;
         this.lowerLimit = lowerLimit;
         managerDB       = new ManagerDB();
@@ -48,5 +50,13 @@ public class ModelWordle {
         managerDB.closeDatabase();
 
         return word;
+    }
+
+    public static void main(String[] args) {
+        ModelWordle mw = new ModelWordle(1, 5);
+
+        for (int i = 0; i < 5; i++) {
+            System.out.println(mw.getRandomWord());
+        }
     }
 }
