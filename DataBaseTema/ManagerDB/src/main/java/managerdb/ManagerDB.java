@@ -17,6 +17,7 @@ import java.util.ArrayList;
  * 
  * @version 1.0
  * @author Eduardo Agustin Cervantes Guerrero <23240389@leon.tecnm.mx>
+ * @author Israel Dominguez Zendejas <23240380@leon.tecnm.mx>
  */
 public class ManagerDB{
    
@@ -174,6 +175,7 @@ public class ManagerDB{
      * @param pKey El id del registro que se quiera buscar
      * @return Un objeto generico al que se le puede ser cast
      */
+    
     public Object getDataByPk(String tableName, String columnPkey, String columnName, int pKey){
 
         try{
