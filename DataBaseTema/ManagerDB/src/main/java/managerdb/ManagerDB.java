@@ -57,7 +57,7 @@ public class ManagerDB{
     private void showMessageError(String message, SQLException e){
         JOptionPane.showMessageDialog(
             null,
-            "Error al conectar a la base de datos:\n" + e.getMessage(),
+            message + e.getMessage(),
             "Error de SQL",
             JOptionPane.ERROR_MESSAGE
         );
