@@ -1,25 +1,24 @@
 package main.java.view;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.JButton;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
 
 /**
  * Clase que perteneces a la vista del progrma ViewWordle
  * 
  * @version 1.0
  * @author Eduardo Agustin Cervantes Guerrero <23240389@leon.tecnm.mx>
- * @author Israel Dominguez Zendejas <2324@leon.tecnm.mx>
+ * @author Israel Dominguez Zendejas <23240380@leon.tecnm.mx>
  */
 public class ViewWordle {
 
