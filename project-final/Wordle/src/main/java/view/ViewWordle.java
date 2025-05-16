@@ -1,9 +1,14 @@
 package main.java.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,42 +28,32 @@ import javax.swing.SwingConstants;
 public class ViewWordle {
 
     private JFrame window;
-    private JPanel panelMain, panelGame, panelFooter;
-    private JLabel labelTry, labelFooter, labelMain, labelSkull;
-    private JButton buttonSubmit;
+    private JPanel southWrapper, leftWrapper, rightWrapper, centerWrapper;
+    private JButton submit, poweroff;
+    private JLabel labelCount;
     private JTextField[][] letters;
+    //Constantes para el manejo de los componentes
     private final int rows = 6;
     private final int cols = 5;
-
+    private final int width  = 800;
+    private final int height = 600;
+    
     /**
      * Constructor por omision que inicializa
-     * los atributos
+     * los atributos uso un matriz de JTextField
+     * para obtener todos los componentes
+     * y manejarlos para el controlador
      */
     public ViewWordle(){
-        window       = new JFrame();
-        buttonSubmit = new JButton();
-        panelMain    = new JPanel();
-        panelGame    = new JPanel();
-        panelFooter  = new JPanel();
-        labelMain    = new JLabel();
-        labelTry     = new JLabel();
-        labelSkull   = new JLabel();
-        labelFooter  = new JLabel();
-        letters      = new JTextField[rows][cols];
-    }
-
-    private ImageIcon escaledImage(String path, int width, int height) {
-        try {
-            ImageIcon originalIcon = new ImageIcon(path);
-            Image scaledImage      = originalIcon.
-            getImage().
-            getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            
-            return new ImageIcon(scaledImage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ImageIcon("src\\main\\resources\\IconoDefault.jpg"); 
-        }
+        window        = new JFrame();
+        centerWrapper = new JPanel();
+        southWrapper  = new JPanel();
+        leftWrapper   = new JPanel();
+        rightWrapper  = new JPanel();
+        submit        = new JButton();
+        poweroff      = new JButton();
+        labelCount    = new JLabel();
+        letters       = new JTextField[rows][cols];
     }
 
     /**
@@ -66,36 +61,107 @@ public class ViewWordle {
      * para el dominio de la aplicacion
      */
     private void setUpWindow(){
-        window.setSize(1200, 800);
+        window.setSize(width, height);
         window.setTitle("Wordle Game");
         window.setLocationRelativeTo(null);
         window.setResizable(false);
-        window.setLayout(null);
+        window.setLayout(new BorderLayout());
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private void setUpPanelMain(){
-        panelMain.setBounds(0,0,1200,800);
-        panelMain.setLayout(null);
-    }
+    /**
+     * Este metodo configura lo necesario para el juego del panel
+     * Primero creamos un panel que es el que
+     * tendra toda la vista que se mostrara en la GUI
+     * Primero se debe comfigurar los Maximun Size
+     */
+    private void setUpGame(){
+        JPanel game     = new JPanel();
 
-    private void setUpPanelFooter(){
-        panelFooter.setBounds(0,665,1200,300);
-        panelFooter.setBackground(Color.CYAN);
-        panelFooter.setLayout(null);
+        this.centerWrapper.setLayout(new GridBagLayout());
+
+        game.setLayout(new GridLayout(rows, cols,0,10));
+        game.setMaximumSize(new Dimension(1000, 500));
+        game.setPreferredSize(new Dimension(800, 200));
+        
+         for (int r = 0; r < rows; r++)
+            for (int c = 0; c < cols; c++){
+                letters[r][c] = setUpTextField();
+                game.add(letters[r][c]);
+            }
+        
+        this.centerWrapper.add(game);
     }
 
     /**
-     * Configuramos el panel que contiene las casillas
-     * en el que el jugador pondra la letra usamos un 
-     * gridlayout para la distribucion de las casillas
-     * de 6 x 5 y la ubicamos en centro de la ventana
+     * Metodo que va configurar el footer en el que este tendra un boton para hacerle 
+     * Un subimit con el que podra ingresar la respuesta del jugador
      */
-    private void setUpPanelWords(){
-        panelGame.setBounds(100, 25, 400, 600);
-        panelGame.setLayout(new GridLayout(rows,cols,0,10));
+    private void setUpFooter(){
+        JPanel footer = new JPanel();
+
+        this.southWrapper.setLayout(new GridBagLayout());
+
+        footer.setMaximumSize(new Dimension(width,85));
+        footer.setPreferredSize(new Dimension(width, 85));
+        
+        this.southWrapper.add(footer);
     }
 
+    private void setUpKeyboard(){
+        JPanel keyboard = new Keyboard().getKeyboard();
+
+        this.leftWrapper.setLayout(new GridBagLayout());
+
+        keyboard.setMaximumSize(new Dimension(400,200));
+        keyboard.setPreferredSize(new Dimension(200, 200));
+
+        this.leftWrapper.add(keyboard);
+    }
+    
+    /**
+     * Este panel sera el encargado de mostrar diferentes 
+     * Botonoes dentro de un panel, o los que se usaran para 
+     * su Uso
+     */
+    private void setUpManageGame(){
+        JPanel utils = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        
+        this.rightWrapper.setLayout(new GridBagLayout());
+
+        utils.add(setUpCount(), BorderLayout.CENTER);
+        utils.add(setUpPoweroff(), BorderLayout.SOUTH);
+        utils.setMaximumSize(new Dimension(200,200));
+        utils.setPreferredSize(new Dimension(200,200));
+
+        this.rightWrapper.add(utils);
+    }
+
+    //Configuracion de los componentes con los que interactura el usuario
+    private JButton setUpSubmit(){
+        submit.setText("Submit");
+        submit.setOpaque(false);
+        
+        return submit;
+    }
+
+    private JButton setUpPoweroff(){
+        poweroff.setText("Apagar");
+        poweroff.setOpaque(false);
+
+        return poweroff;
+    }
+
+    //Este metodo de setBorder crea un border pero que no se vea y separe el componente
+    private JLabel setUpCount(){
+        labelCount.setText("Numero de intentos: ");
+        labelCount.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        labelCount.setForeground(Color.BLACK);
+
+        return labelCount;
+    }
+
+    //Apartado de metodos auxiliares
     /**
      * Aqui se configura el textArea en el que el 
      * usuario pondra su letra en cada uno pero
@@ -111,105 +177,68 @@ public class ViewWordle {
         JTextField letterCell = new JTextField();   
         
         letterCell.setHorizontalAlignment(SwingConstants.CENTER);
-        letterCell.setColumns(1);
-        letterCell.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+        letterCell.setColumns(5);
+        letterCell.setFont(new Font("Comic Sans MS", Font.PLAIN, 24));
         letterCell.setText("");
         letterCell.setBorder(BorderFactory.createLineBorder(
             new Color(242, 135, 115), 3
         ));
 
+        Dimension size = new Dimension(50, 50);
+        letterCell.setPreferredSize(size);
+        letterCell.setMinimumSize(size);
+        letterCell.setMaximumSize(size);
+
         return letterCell;
     }
 
-    private void setButtonSubmit(){
-        buttonSubmit.setBounds(525, 25, 100, 50);;
-        buttonSubmit.setText("Submit");
+     /**
+     * Metodo convencional para el escalado de imagenes en lo que se requiera
+     * @param path direccion de la imagen en string
+     * @param width Ancho de la imagen
+     * @param height Altura de la imagen
+     * @return Un objeto de tipo ImageIcon
+     */
+    private ImageIcon escaledImage(String path, int width, int height) {
+        try {
+            ImageIcon originalIcon = new ImageIcon(path);
+            Image scaledImage      = originalIcon.
+            getImage().
+            getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            
+            return new ImageIcon(scaledImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ImageIcon("src\\main\\resources\\IconoDefault.jpg"); 
+        }
     }
-
-    //Esta es la configuracion de todas las etiquetas
-    private void setUpLabelTry(){
-        labelTry.setBounds(20, 20, 200, 55);
-        labelTry.setText("Numero de intentos: ");
-        labelTry.setBorder(BorderFactory.createLineBorder(Color.RED,3));
-        labelTry.setForeground(Color.BLACK);
-    }
-
-    private void setUpLabelFooter(){
-        labelFooter.setBounds(0, 0, 1200, 300);
-        labelFooter.setIcon(escaledImage(
-            "src\\main\\resources\\WooDBest.jpg", 
-           1200, 
-          300
-        ));
-    }
-
-    private void setUpLabelMain(){
-        labelMain.setBounds(0, 0, 1200, 800);
-    }
-
-    private void setUpLabelSkull(){
-        labelSkull.setBounds(600, 25, 400, 400);
-        labelSkull.setIcon(
-            escaledImage(
-                "src\\main\\resources\\Skull.jpg", 
-                400, 
-                400
-        ));
-    }
-
+    
     /**
      * Configura todos los atributos de la clase
      */
     private void setUpAll(){
         setUpWindow();
-        setUpPanelWords();
-        setButtonSubmit();
-        setUpPanelFooter();
-        setUpPanelMain();
-        setUpLabelTry();
-        setUpLabelFooter();
-        setUpLabelMain();
-        setUpLabelSkull();
+        setUpGame();
+        setUpFooter();
+        setUpKeyboard();
+        setUpManageGame();
     }
 
     /**
      * Aqui se arma todos los coponentes de las vista
-     * cabe recalcar que se usara una matriz para tener
-     * control de cada elemento en el que el usuario 
-     * coloca su letra 
      */
     private void assamble(){
         this.setUpAll();
         
-        for (int r = 0; r < rows; r++)
-            for (int c = 0; c < cols; c++){
-                letters[r][c] = setUpTextField();
-                panelGame.add(letters[r][c]);
-            }
-        
-        panelFooter.add(labelTry);
-        panelFooter.add(buttonSubmit); //Coloca el boton en el sur del panel footer
-        panelFooter.add(labelFooter);
-        
-
-        panelMain.add(panelFooter);    //Coloca en el sur el panel footer
-        panelMain.add(panelGame);      //El panel game se coloca en el centro
-        panelMain.add(new Keyboard().getKeyboard(
-            600, 
-            450, 
-            400, 
-            200
-        ));    
-        panelMain.add(labelSkull);
-        panelMain.add(labelMain);
-        
-
-        window.add(panelMain); 
+        southWrapper.add(this.setUpSubmit());
+        window.add(centerWrapper,BorderLayout.CENTER);
+        window.add(southWrapper, BorderLayout.SOUTH);
+        window.add(leftWrapper,  BorderLayout.WEST);
+        window.add(rightWrapper, BorderLayout.EAST); 
     }
 
     /**
      * Metodo que ensambla y muestra la ventana
-     * TODO verificar que los elementos de la matriz no sea nulo
      */
     public void display(){
         this.assamble();

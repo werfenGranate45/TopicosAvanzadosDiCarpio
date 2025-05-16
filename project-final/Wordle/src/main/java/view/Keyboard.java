@@ -28,6 +28,8 @@ public class Keyboard {
 
     private void setUpContainKeyboard(){
         keyboard.setLayout(new GridLayout(row,col,10,0));
+        //Con este metodo hacemos que el fondo sea transparente
+        keyboard.setOpaque(false);
     }
 
     private JLabel setUpLabelKeyboard(){
@@ -39,7 +41,9 @@ public class Keyboard {
         letterContainer.setBorder(BorderFactory.createLineBorder(
             new Color(242, 135, 115), 3
         ));
-        letterContainer.setFont(new Font("Arial", Font.BOLD, 24));
+        letterContainer.setFont(new Font("Arial", Font.BOLD, 20));
+        //Con este metodo se le cambia el color de la fuente
+        letterContainer.setForeground(Color.PINK);
 
         return letterContainer;
     }
@@ -64,5 +68,11 @@ public class Keyboard {
         keyboard.setBounds(x, y, width, height);
 
         return keyboard;
+    }
+
+    public JPanel getKeyboard(){
+        this.assambleKeyboard();
+        
+        return this.keyboard;
     }
 }
