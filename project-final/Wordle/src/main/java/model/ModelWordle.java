@@ -3,17 +3,16 @@ import main.java.managerdb.ManagerDB;
 
 import java.util.Random;
 
-public class ModelWordle {
+public class ModelWordle { //Clase que se encarga de tener el problema
     private int upperLimit;
     private int lowerLimit;
     private int pkWord;
     private ManagerDB managerDB;
-    private final String[] metaData = {
-        "jdbc:derby:./database/WordleDB",
-        "words",
-        "PKWord",
-        "word"
-    };
+    private final String dbURL = "jdbc:derby:./database/WordleDB";
+    private final String tableName = "words";
+    private final String pkColumn  = "PKWord";
+    private final String column = "word";
+
     
     //Verificar que upperloweLimit sea menor que upperLimit+1
    
@@ -40,23 +39,14 @@ public class ModelWordle {
      */
     public String getRandomWord(){
         String word;
-
         this.getRandomNumber();
         //Checar que se guarden dentro de la base de datos correctamente
-        managerDB.setURLDB(metaData[0]);
+        managerDB.setURLDB(dbURL);
 
         managerDB.openDatabase();
-        word = (String) managerDB.getDataByPk(metaData[1], metaData[2], metaData[3], pkWord);
+        word = (String) managerDB.getDataByPk(tableName, pkColumn, column, pkWord);
         managerDB.closeDatabase();
 
         return word;
-    }
-
-    public static void main(String[] args) {
-        ModelWordle mw = new ModelWordle(1, 5);
-
-        for (int i = 0; i < 5; i++) {
-            System.out.println(mw.getRandomWord());
-        }
     }
 }
