@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import java.sql.ResultSet;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class ManagerDB{
     private String password;
     private Connection connection;
     private Statement statement;
+    private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
     /**
@@ -96,17 +98,12 @@ public class ManagerDB{
      * @return Si esta abierta la conexion regresa {@code true}; De lo contrario {@code false}
      */
     public boolean isOpen(){
-        boolean isOpen = false;
-
         try {
-            isOpen = !(connection.isClosed());
-            
+            return !(connection.isClosed());
         } catch (SQLException e) {
            this.showMessageError("No se puede verificar la apertura de la DataBase", e);
-            isOpen = false;
+            return false;
         }
-
-        return isOpen;
     }
     
     private void searchRecordByPk(String tableName, String columnPkey, int pKey) {
@@ -153,12 +150,12 @@ public class ManagerDB{
                 info.add(data);
                 data = ""; //Reiniciamos el valor data en el que se guarda en el arreglo
             }
+
+            return info;
         } catch (SQLException e) {
             this.showMessageError("Hubo un error en la Base de datos: ", e);
-            info = null;
+            return null;
         }
-
-        return info;
     }
 
     /**
@@ -180,12 +177,44 @@ public class ManagerDB{
 
         try{
             searchRecordByPk(tableName, columnPkey, pKey);
-            return (resultSet.next()) ? resultSet.getObject(columnName) : null;
+            if(resultSet.next())
+                return resultSet.getObject(columnName);
+            return null;
         }catch(SQLException e){
             showMessageError("No se pudo obtener el valor del registro", e);
+            return null;
         }
+    }
 
-        return null;
+    /**
+     * Este metodo intenta buscar un registro dentro de la base de datos para verificar 
+     * un valor en especifico se encuntra dentro de la base de datos solo perimite 
+     * hacer una consulta de una sola columna por ahora y de un solo valor
+     * 
+     * Se usa prepareStatement() ya que con este digamos renderizamos la consulta sql
+     * evitando sql injectios y mas eficiente.
+     * 
+     * Este caso para este metodo le debesmos especificar en la SQL consulta la Columna y la tabla
+     * @param columns El nombre de la columna a buscar
+     * @param tableName El nombre de la tabla en la que vamos a buscar
+     * @param valueSearch El valor a buscar
+     * @return Si existe el valor manda {@code True} de lo contrario {@code false}
+     */
+    public boolean whereInDatabase(String columns, String tableName, String valueSearch){
+        
+        String sql = "SELECT * FROM "+tableName+" WHERE "+columns+" = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, valueSearch);
+
+            resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            this.showMessageError("Hubo un error buscando "+valueSearch+"En la base de datos", e);
+            return false;
+        }
+        
     }
 
     //Desde este punto se escriben los setters y getters de la base de datos
